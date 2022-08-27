@@ -3,6 +3,8 @@ package haqnawaz.org.a20220815db;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,8 +18,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-//    DBHelper myDb;
-//    buttonUpdate, buttonDelete,
+    static DBHelper databaseAdapter;
     Button buttonAdd, buttonViewAll;
     EditText editName, editRollNumber;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -29,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         buttonAdd = findViewById(R.id.buttonAdd);
-//        buttonUpdate = findViewById(R.id.buttonUpdate);
-//        buttonDelete = findViewById(R.id.buttonDelete);
         buttonViewAll = findViewById(R.id.buttonViewAll);
         editName = findViewById(R.id.editTextName);
         editRollNumber = findViewById(R.id.editTextRollNumber);
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         listViewStudent = findViewById(R.id.listViewStudent);
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             StudentModel studentModel;
-
             @Override
             public void onClick(View v) {
                 try {
@@ -52,34 +50,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-//        buttonUpdate.setOnClickListener(v -> {
-//
-//            boolean isUpdate = myDb.updateStudent(editName.getText().toString(),
-//                    editRollNumber.getText().toString(), switchIsActive.isChecked());
-//            if (isUpdate)
-//                Toast.makeText(MainActivity.this, "Data Update", Toast.LENGTH_LONG).show();
-//            else
-//                Toast.makeText(MainActivity.this, "Data not Updated", Toast.LENGTH_LONG).show();
-//        });
-//
-//
-//        buttonDelete.setOnClickListener(v -> {
-//            Integer deletedRows = myDb.deleteStudent(editRollNumber.getText().toString());
-//            if(deletedRows > 0)
-//                Toast.makeText(MainActivity.this,"Data Deleted",Toast.LENGTH_LONG).show();
-//            else
-//                Toast.makeText(MainActivity.this,"Data not Deleted",Toast.LENGTH_LONG).show();
-//        });
-
-        buttonViewAll.setOnClickListener(v -> {
-            DBHelper dbHelper = new DBHelper(MainActivity.this);
-            List<StudentModel> list = dbHelper.getAllStudents();
-            ArrayAdapter<StudentModel> arrayAdapter = new ArrayAdapter<>
-                    (MainActivity.this, android.R.layout.simple_list_item_1, list);
-            listViewStudent.setAdapter(arrayAdapter);
-
+        buttonViewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBHelper dbHelper = new DBHelper(MainActivity.this);
+                List<StudentModel> list = dbHelper.getAllStudents();
+                ArrayAdapter arrayAdapter = new ArrayAdapter<StudentModel>
+                        (MainActivity.this, android.R.layout.simple_list_item_1, list);
+                listViewStudent.setAdapter(arrayAdapter);
+                listViewStudent.setOnItemClickListener((parent, view, position, id) -> {
+                    Cursor cursor = (Cursor) arrayAdapter.getItem(position);
+                    String name = cursor.getString(1);
+                    String rollNo = cursor.getString(2);
+                    boolean enroll = cursor.getExtras().getBoolean(String.valueOf(3));
+                    Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("name", name);
+                    intent.putExtra("rollNo", rollNo);
+                    intent.putExtra("enroll", enroll);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(MainActivity.this, name, Toast.LENGTH_LONG).show();
+                });
+            }
         });
+
+
 
     }
 }
+
