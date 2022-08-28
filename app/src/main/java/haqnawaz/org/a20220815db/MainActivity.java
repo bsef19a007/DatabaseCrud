@@ -1,7 +1,6 @@
 package haqnawaz.org.a20220815db;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +18,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     static DBHelper databaseAdapter;
+//    DBHelper myDb;
+//    buttonUpdate, buttonDelete,
     Button buttonAdd, buttonViewAll;
     EditText editName, editRollNumber;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         buttonAdd = findViewById(R.id.buttonAdd);
+
+//        buttonUpdate = findViewById(R.id.buttonUpdate);
+//        buttonDelete = findViewById(R.id.buttonDelete);
         buttonViewAll = findViewById(R.id.buttonViewAll);
         editName = findViewById(R.id.editTextName);
         editRollNumber = findViewById(R.id.editTextRollNumber);
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         listViewStudent = findViewById(R.id.listViewStudent);
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             StudentModel studentModel;
+            
             @Override
             public void onClick(View v) {
                 try {
@@ -76,6 +81,38 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+    }
+}
+
+
+//        buttonUpdate.setOnClickListener(v -> {
+//
+//            boolean isUpdate = myDb.updateStudent(editName.getText().toString(),
+//                    editRollNumber.getText().toString(), switchIsActive.isChecked());
+//            if (isUpdate)
+//                Toast.makeText(MainActivity.this, "Data Update", Toast.LENGTH_LONG).show();
+//            else
+//                Toast.makeText(MainActivity.this, "Data not Updated", Toast.LENGTH_LONG).show();
+//        });
+//
+//
+//        buttonDelete.setOnClickListener(v -> {
+//            Integer deletedRows = myDb.deleteStudent(editRollNumber.getText().toString());
+//            if(deletedRows > 0)
+//                Toast.makeText(MainActivity.this,"Data Deleted",Toast.LENGTH_LONG).show();
+//            else
+//                Toast.makeText(MainActivity.this,"Data not Deleted",Toast.LENGTH_LONG).show();
+//        });
+
+        buttonViewAll.setOnClickListener(v -> {
+            DBHelper dbHelper = new DBHelper(MainActivity.this);
+            List<StudentModel> list = dbHelper.getAllStudents();
+            ArrayAdapter<StudentModel> arrayAdapter = new ArrayAdapter<>
+                    (MainActivity.this, android.R.layout.simple_list_item_1, list);
+            listViewStudent.setAdapter(arrayAdapter);
+
+        });
 
     }
 }

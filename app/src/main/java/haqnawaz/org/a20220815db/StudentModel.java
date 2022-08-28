@@ -2,10 +2,12 @@ package haqnawaz.org.a20220815db;
 
 import androidx.annotation.NonNull;
 
+
 public class StudentModel {
     private String name;
     private int rollNumber;
     private boolean isEnroll;
+
 
     @NonNull
     @Override

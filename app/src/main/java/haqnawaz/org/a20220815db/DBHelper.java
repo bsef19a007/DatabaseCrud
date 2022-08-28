@@ -48,6 +48,10 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put(STUDENT_ENROLL, STUDENTModel.isEnroll());
         db.insert(STUDENT_TABLE, null, cv);
         db.close();
+        //NullCoumnHack
+        //long insert =
+        //if (insert == -1) { return false; }
+        //else{return true;}
     }
 
     public ArrayList<StudentModel> getAllStudents() {
@@ -90,6 +94,7 @@ public class DBHelper extends SQLiteOpenHelper {
         int count = db.delete(DBHelper.STUDENT_TABLE, DBHelper.STUDENT_ID + "=?", whereArgs);
         return count;
     }
+
 
 //    public boolean updateStudent(String name, String roll, boolean enroll) {
 //        SQLiteDatabase db = this.getWritableDatabase();

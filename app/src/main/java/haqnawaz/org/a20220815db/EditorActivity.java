@@ -1,8 +1,6 @@
 package haqnawaz.org.a20220815db;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,5 +43,16 @@ public class EditorActivity extends AppCompatActivity {
         MainActivity.databaseAdapter.deleteStudentNew(id);
         startActivity(new Intent(EditorActivity.this, MainActivity.class));
         finish();
+        
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+public class EditorActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edidor);
     }
 }
