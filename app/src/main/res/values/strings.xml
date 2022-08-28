@@ -6,5 +6,6 @@
     <string name="ButtonViewAll">View All Records</string>
     <string name="Add">Add Record</string>
     <string name="Update">Update Record</string>
-    <string name="Delete">Delete Record</string>
+    <string name="StudentDetails">Student Details</string>
+    <string name="rollNumber">Roll Number</string>
 </resources>

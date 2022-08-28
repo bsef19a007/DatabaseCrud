@@ -41,7 +41,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void  addStudent(StudentModel STUDENTModel){
         SQLiteDatabase db = this.getWritableDatabase();
-        //Hash map, as we did in bundles
         ContentValues cv = new ContentValues();
 
         cv.put(STUDENT_NAME, STUDENTModel.getName());
@@ -77,6 +76,25 @@ public class DBHelper extends SQLiteOpenHelper {
         cursorCourses.close();
         return studentArrayList;
     }
+
+    public int updateStudentNew(long id, String name, String roll, boolean enroll) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(STUDENT_NAME, name);
+        cv.put(STUDENT_ROLL, roll);
+        cv.put(STUDENT_ENROLL, enroll);
+        String whereArgs[] = {""+id};
+        int count = db.update(DBHelper.STUDENT_TABLE, cv, DBHelper.STUDENT_ID+ "=?", whereArgs);
+        return count;
+    }
+
+    public int deleteStudentNew(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String whereArgs[] = {""+id};
+        int count = db.delete(DBHelper.STUDENT_TABLE, DBHelper.STUDENT_ID + "=?", whereArgs);
+        return count;
+    }
+
 
 //    public boolean updateStudent(String name, String roll, boolean enroll) {
 //        SQLiteDatabase db = this.getWritableDatabase();

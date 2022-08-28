@@ -1,8 +1,9 @@
 package haqnawaz.org.a20220815db;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    static DBHelper databaseAdapter;
 //    DBHelper myDb;
 //    buttonUpdate, buttonDelete,
     Button buttonAdd, buttonViewAll;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         buttonAdd = findViewById(R.id.buttonAdd);
+
 //        buttonUpdate = findViewById(R.id.buttonUpdate);
 //        buttonDelete = findViewById(R.id.buttonDelete);
         buttonViewAll = findViewById(R.id.buttonViewAll);
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         listViewStudent = findViewById(R.id.listViewStudent);
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             StudentModel studentModel;
-
+            
             @Override
             public void onClick(View v) {
                 try {
@@ -51,6 +54,36 @@ public class MainActivity extends AppCompatActivity {
                 dbHelper.addStudent(studentModel);
             }
         });
+
+        buttonViewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBHelper dbHelper = new DBHelper(MainActivity.this);
+                List<StudentModel> list = dbHelper.getAllStudents();
+                ArrayAdapter arrayAdapter = new ArrayAdapter<StudentModel>
+                        (MainActivity.this, android.R.layout.simple_list_item_1, list);
+                listViewStudent.setAdapter(arrayAdapter);
+                listViewStudent.setOnItemClickListener((parent, view, position, id) -> {
+                    Cursor cursor = (Cursor) arrayAdapter.getItem(position);
+                    String name = cursor.getString(1);
+                    String rollNo = cursor.getString(2);
+                    boolean enroll = cursor.getExtras().getBoolean(String.valueOf(3));
+                    Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("name", name);
+                    intent.putExtra("rollNo", rollNo);
+                    intent.putExtra("enroll", enroll);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(MainActivity.this, name, Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+
+
+
+    }
+}
 
 
 //        buttonUpdate.setOnClickListener(v -> {
@@ -83,3 +116,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
